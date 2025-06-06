@@ -28,7 +28,7 @@ using hex::EventAnySettingChanged;
 constexpr static auto DiscordClientID = 1060827018196955177;
 constexpr static auto LargeIconID = "imhex_logo";
 
-static bool s_rpcEnabled = false;
+static bool s_rpcEnabled = true;
 static bool s_showProvider = false;
 static bool s_showSelection = false;
 static bool s_showTimestamp = false;
@@ -137,7 +137,7 @@ namespace {
 
     void registerSettings() {
         ContentRegistry::Settings::setCategoryDescription("hex.discord_rpc.settings", "hex.discord_rpc.settings.desc");
-        ContentRegistry::Settings::add<ContentRegistry::Settings::Widgets::Checkbox>("hex.discord_rpc.settings", "", "hex.discord_rpc.settings.enabled", false);
+        ContentRegistry::Settings::add<ContentRegistry::Settings::Widgets::Checkbox>("hex.discord_rpc.settings", "", "hex.discord_rpc.settings.enabled", true);
         ContentRegistry::Settings::add<ContentRegistry::Settings::Widgets::Checkbox>("hex.discord_rpc.settings", "", "hex.discord_rpc.settings.show_provider", false)
             .setEnabledCallback(rpcEnabled);
         ContentRegistry::Settings::add<ContentRegistry::Settings::Widgets::Checkbox>("hex.discord_rpc.settings", "", "hex.discord_rpc.settings.show_selection", false)
