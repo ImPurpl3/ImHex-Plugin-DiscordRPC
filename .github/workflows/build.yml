@@ -7,7 +7,7 @@ jobs:
     name: Windows
     defaults:
       run:
-        shell: shell: bash
+        shell: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -18,7 +18,7 @@ jobs:
         uses: WerWolv/imhex-download-sdk@v1.32.2
       - name: Build
         run: |
-          mkdir build
+          mkdir -p build
           cd build
           IMHEX_SDK_PATH="${{ steps.install_sdk.outputs.sdk_path }}"      \
             cmake -G Ninja                                                \
