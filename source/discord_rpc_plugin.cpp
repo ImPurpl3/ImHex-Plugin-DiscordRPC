@@ -10,6 +10,9 @@
 #include <hex/helpers/logger.hpp>
 #include <hex/helpers/fmt.hpp>
 #include <wolv/utils/guards.hpp>
+#include <hex/api/events/events_provider.hpp>
+#include <hex/api/events/events_interaction.hpp>
+#include <hex/api/events/events_gui.hpp>  
 
 using namespace hex;
 
@@ -88,15 +91,15 @@ namespace {
     }
 
     void registerEvents() {
-        EventManager::subscribe<EventProviderChanged>([](prv::Provider *, prv::Provider *) {
+        EventManager::subscribe<EventProviderChanged>([](prv::Provider* oldProvider, prv::Provider* currentProvider) {
             updateActivity();
         });
 
-        EventManager::subscribe<EventProviderOpened>([](prv::Provider *) {
+        EventManager::subscribe<EventProviderOpened>([](prv::Provider* provider) {
             updateActivity();
         });
 
-        EventManager::subscribe<EventRegionSelected>([](Region) {
+        EventManager::subscribe<EventRegionSelected>([]() {
             updateActivity();
         });
 
@@ -104,7 +107,7 @@ namespace {
             core->RunCallbacks();
         });
 
-        EventManager::subscribe<EventWindowClosing>([](auto){
+        EventManager::subscribe<EventWindowClosing>([](GLFWwindow* window){
             core->ActivityManager().ClearActivity([](discord::Result result) {
                 if (result == discord::Result::Ok)
                     log::info("Successfully cleared activity");
