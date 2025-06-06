@@ -13,6 +13,7 @@
 #include <hex/api/events/events_provider.hpp>
 #include <hex/api/events/events_interaction.hpp>
 #include <hex/api/events/events_gui.hpp>  
+#include <hex/api/events/events_lifecycle.hpp>  
 
 using namespace hex;
 
@@ -22,7 +23,7 @@ using hex::EventProviderOpened;
 using hex::EventRegionSelected;
 using hex::EventFrameEnd;
 using hex::EventWindowClosing;
-using hex::EventSettingsChanged;
+using hex::EventAnySettingChanged;
 
 constexpr static auto DiscordClientID = 1060827018196955177;
 constexpr static auto LargeIconID = "imhex_logo";
@@ -96,6 +97,7 @@ namespace {
         });
 
         EventManager::subscribe<EventProviderOpened>([](prv::Provider* provider) {
+            (void)provider;
             updateActivity();
         });
 
@@ -108,6 +110,7 @@ namespace {
         });
 
         EventManager::subscribe<EventWindowClosing>([](GLFWwindow* window){
+            (void)window;
             core->ActivityManager().ClearActivity([](discord::Result result) {
                 if (result == discord::Result::Ok)
                     log::info("Successfully cleared activity");
@@ -116,7 +119,7 @@ namespace {
             });
         });
 
-        EventManager::subscribe<EventSettingsChanged>([]{
+        EventManager::subscribe<EventAnySettingChanged>([]{
             s_rpcEnabled = ContentRegistry::Settings::read<bool>("hex.discord_rpc.settings", "hex.discord_rpc.settings.enabled", false);
             s_showProvider = ContentRegistry::Settings::read<bool>("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_provider", false);
             s_showSelection = ContentRegistry::Settings::read<bool>("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_selection", false);
