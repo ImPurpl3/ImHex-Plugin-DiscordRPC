@@ -29,9 +29,9 @@ constexpr static auto DiscordClientID = 1060827018196955177;
 constexpr static auto LargeIconID = "imhex_logo";
 
 static bool s_rpcEnabled = true;
-static bool s_showProvider = false;
-static bool s_showSelection = false;
-static bool s_showTimestamp = false;
+static bool s_showProvider = true;
+static bool s_showSelection = true;
+static bool s_showTimestamp = true;
 
 static time_t g_startTime = 0;
 
@@ -73,11 +73,13 @@ namespace {
             }
 
             activity.SetDetails(details.c_str());
+            log::info("Set details: '" + details + "'");
 
             if (s_showProvider)
                 state = ImHexApi::Provider::get()->getName();
 
             activity.SetState(state.c_str());
+            log::info("Set state: '" + state + "'");
         }
 
         activity.GetAssets().SetLargeText(IMHEX_VERSION);
