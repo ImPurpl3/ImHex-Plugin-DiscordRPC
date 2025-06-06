@@ -5,9 +5,6 @@ jobs:
   win:
     runs-on: self-hosted
     name: Windows
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,13 +22,14 @@ jobs:
         id: install_sdk
         uses: WerWolv/imhex-download-sdk@v1.32.2
       - name: Build
+        shell: msys2 {0}
         run: |
           mkdir build
           cd build
-          IMHEX_SDK_PATH="${{ steps.install_sdk.outputs.sdk_path }}"      \
-            cmake -G Ninja                                                \
-            -DCMAKE_BUILD_TYPE=Release                                    \
-            -DCMAKE_INSTALL_PREFIX="./install"                            \
+          IMHEX_SDK_PATH="${{ steps.install_sdk.outputs.sdk_path }}" \
+            cmake -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="./install" \
             ..
           cmake --build .
           cmake --install .
