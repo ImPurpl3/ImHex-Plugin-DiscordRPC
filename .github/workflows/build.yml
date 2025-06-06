@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   win:
-    runs-on: windows-2022
+    runs-on: self-hosted
     name: Windows
     defaults:
       run:
