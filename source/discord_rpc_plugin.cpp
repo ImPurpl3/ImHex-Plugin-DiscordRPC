@@ -93,6 +93,8 @@ namespace {
 
     void registerEvents() {
         EventManager::subscribe<EventProviderChanged>([](prv::Provider* oldProvider, prv::Provider* currentProvider) {
+            (void)oldProvider;
+            (void)currentProvider;
             updateActivity();
         });
 
@@ -101,7 +103,7 @@ namespace {
             updateActivity();
         });
 
-        EventManager::subscribe<EventRegionSelected>([]() {
+        EventManager::subscribe<EventRegionSelected>(nullptr, []() {
             updateActivity();
         });
 
