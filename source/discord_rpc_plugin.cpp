@@ -1,22 +1,25 @@
 #include <hex/plugin.hpp>
-
 #include <discord.h>
-
 #include <hex/api/imhex_api.hpp>
 #include <hex/api/content_registry.hpp>
 #include <hex/api/event_manager.hpp>
 #include <hex/api/localization_manager.hpp>
-
-#include <hex/helpers/logger.hpp>
-#include <hex/helpers/fmt.hpp>
-
-#include <wolv/utils/guards.hpp>
-
 #include <hex/providers/provider.hpp>
 #include <romfs/romfs.hpp>
 #include <nlohmann/json.hpp>
+#include <hex/helpers/logger.hpp>
+#include <hex/helpers/fmt.hpp>
+#include <wolv/utils/guards.hpp>
 
 using namespace hex;
+
+// Make sure these event types exist and are included:
+using hex::EventProviderChanged;
+using hex::EventProviderOpened;
+using hex::EventRegionSelected;
+using hex::EventFrameEnd;
+using hex::EventWindowClosing;
+using hex::EventSettingsChanged;
 
 constexpr static auto DiscordClientID = 1060827018196955177;
 constexpr static auto LargeIconID = "imhex_logo";
@@ -111,10 +114,10 @@ namespace {
         });
 
         EventManager::subscribe<EventSettingsChanged>([]{
-            s_rpcEnabled = ContentRegistry::Settings::read("hex.discord_rpc.settings", "hex.discord_rpc.settings.enabled", false);
-            s_showProvider = ContentRegistry::Settings::read("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_provider", false);
-            s_showSelection = ContentRegistry::Settings::read("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_selection", false);
-            s_showTimestamp = ContentRegistry::Settings::read("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_timestamp", false);
+            s_rpcEnabled = ContentRegistry::Settings::read<bool>("hex.discord_rpc.settings", "hex.discord_rpc.settings.enabled", false);
+            s_showProvider = ContentRegistry::Settings::read<bool>("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_provider", false);
+            s_showSelection = ContentRegistry::Settings::read<bool>("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_selection", false);
+            s_showTimestamp = ContentRegistry::Settings::read<bool>("hex.discord_rpc.settings", "hex.discord_rpc.settings.show_timestamp", false);
 
             updateActivity();
         });
