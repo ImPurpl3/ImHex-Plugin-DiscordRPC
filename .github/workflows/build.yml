@@ -5,17 +5,28 @@ jobs:
   win:
     runs-on: self-hosted
     name: Windows
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: ImHex Plugin
+      - name: Install SDK
         id: install_sdk
         uses: WerWolv/imhex-download-sdk@v1.37.4
       - name: Build
-        shell: cmd
-        run: msys2 -c "mkdir build; cd build; IMHEX_SDK_PATH="${{ steps.install_sdk.outputs.sdk_path }}" \cmake -G Ninja \-DCMAKE_BUILD_TYPE=Release \-DCMAKE_INSTALL_PREFIX="./install" \..;cmake --build .; cmake --install ."
+        run: |
+          mkdir build
+          cd build
+          IMHEX_SDK_PATH="${{ steps.install_sdk.outputs.sdk_path }}"      \
+            cmake -G Ninja                                                \
+            -DCMAKE_BUILD_TYPE=Release                                    \
+            -DCMAKE_INSTALL_PREFIX="./install"                            \
+            ..
+          cmake --build .
+          cmake --install .
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
