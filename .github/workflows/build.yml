@@ -13,12 +13,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Test MSYS2
+      - name: Test MSYS2 Output
         shell: msys2 {0}
         run: |
           echo "MSYS2 is working!"
           uname -a
           which bash
+          ls /
       - name: Install SDK
         id: install_sdk
         uses: WerWolv/imhex-download-sdk@v1.37.4
