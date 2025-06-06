@@ -103,7 +103,7 @@ namespace {
             updateActivity();
         });
 
-        EventManager::subscribe<EventRegionSelected>(nullptr, []() {
+        EventManager::subscribe<EventRegionSelected>(nullptr, [](const ImHexApi::HexEditor::ProviderRegion &region) {
             updateActivity();
         });
 
